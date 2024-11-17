@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4g4f4;
+            margin: 0;
+        }
+        .calculator {
+            background: #aab;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 400px;
+        }
+        .display {
+            width: 100%;
+            height: 90px;
+            text-align: right;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            border: 1px solid #zzz;
+            border-radius: 7px;
+            padding: 5px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 7px;
+        }
+        button {
+            padding: 27px;
+            font-size: 3rem;
+            border: none;
+            border-radius: 17px;
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button.clear {
+            background-color: #913831;
+        }
+        button.calculate {
+            background-color: #50C878;
+        }
+        button.clear:hover {
+            background-color: #b71d2a;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" class="display" placeholder="ALVIN'S CALC" oninput="validateInput()" />
+        <div class="buttons">
+            <button onclick="appendNumber('7')">7</button>
+            <button onclick="appendNumber('8')">8</button>
+            <button onclick="appendNumber('9')">9</button>
+            <button onclick="setOperator('/')">/</button>
+            <button onclick="appendNumber('4')">4</button>
+            <button onclick="appendNumber('5')">5</button>
+            <button onclick="appendNumber('6')">6</button>
+            <button onclick="setOperator('*')">*</button>
+            <button onclick="appendNumber('1')">1</button>
+            <button onclick="appendNumber('2')">2</button>
+            <button onclick="appendNumber('3')">3</button>
+            <button onclick="setOperator('-')">-</button>
+            <button onclick="appendNumber('0')">0</button>
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button onclick="setOperator('+')">+</button>
+            <button class="calculate" onclick="calculate()">=</button>
+            
+            
+        </div>
+    </div>
+
+    <script>
+let currentInput = '';
+let operator = null;
+let firstOperand = null;
+
+function appendNumber(number) {
+    currentInput += number;
+    updateDisplay();
+}
+
+function setOperator(op) {
+    if (currentInput === '') return;
+    firstOperand = parseFloat(currentInput);
+    operator = op;
+    currentInput = '';
+}
+
+function calculate() {
+    if (currentInput === '' || firstOperand === null || operator === null) return;
+    const secondOperand = parseFloat(currentInput);
+    let result;
+    switch (operator) {
+        case '+':
+            result = firstOperand + secondOperand;
+            break;
+        case '-':
+            result = firstOperand - secondOperand;
+            break;
+        case '*':
+            result = firstOperand * secondOperand;
+            break;
+        case '/':
+            result = firstOperand / secondOperand;
+            break;
+        default:
+            result = 0;
+    }
+    currentInput = result.toString();
+    operator = null;
+    firstOperand = null;
+    updateDisplay();
+}
+
+function clearDisplay() {
+    currentInput = '';
+    operator = null;
+    firstOperand = null;
+    updateDisplay();
+}
+
+function updateDisplay() {
+    const display = document.getElementById('display');
+    display.value = currentInput || '0';
+}
+
+function validateInput() {
+    const display = document.getElementById('display');
+    const valid = display.value.replace(/[^0-9.]/g, ''); // Allow only numbers and decimal points
+    currentInput = valid;
+    display.value = valid;
+}
+
+</script>
+
+</body>
+</html>
